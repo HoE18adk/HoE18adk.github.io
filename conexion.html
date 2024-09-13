@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso y Flor</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            background-color: #d7d7a8;
+            font-family: Arial;
+            text-align: center; /* Centrar el contenido */
+        }
+
+        h1 {
+            color: #ff0a54;
+        }
+
+        .formulario {
+            justify-content: center;
+            display: flex;
+            margin-top: 50px;
+        }
+
+        .formulario input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .formulario button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff0a54;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase; /* Texto en mayúsculas */
+        }
+
+        .formulario button:hover {
+            background-color: #e0094d;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Formulario de ingreso -->
+    <div class="formulario">
+        <input type="text" id="usuario" placeholder="Usuario" oninput="toggleButton()" />
+        <button class="mostrar" id="btnIngresar" onclick="redirigir()">INGRESAR</button>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        function toggleButton() {
+            const usuarioInput = document.getElementById('usuario').value;
+            const btnIngresar = document.getElementById('btnIngresar');
+            btnIngresar.style.display = usuarioInput ? 'block' : 'none';
+        }
+
+        function redirigir() {
+            const usuarioInput = document.getElementById('usuario').value.toLowerCase();
+            const error = document.getElementById('error');
+
+            if (usuarioInput === 'belen' || usuarioInput === 'pahola') {
+                // Redirigir al enlace de Google Drive
+                window.location.href = 'https://drive.google.com/file/d/1Ab7MdKOqGOEHbq3TbqJTRbnfVLwEkNzT/view?usp=drive_link';
+            } else {
+                // Mostrar mensaje de error genérico
+                error.textContent = 'Usuario inválido.';
+            }
+        }
+    </script>
+</body>
+</html>

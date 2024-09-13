@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flor con CSS</title>
+    <style>
+        /* Estilo del cuerpo */
+        body {
+            background-color: #d7d7a8;
+            font-family: Arial;
+        }
+
+        /* Estilo para el título */
+        h1 {
+            color: #ff0a54;
+            text-align: center;
+        }
+
+        /* Contenedor de la flor */
+        .flor {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 50px auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Pétalos de la flor */
+        .petalo {
+            width: 150px;
+            height: 150px;
+            background-color: yellow;
+            border-radius: 50% 50% 0 0;
+            position: absolute;
+            top: 75px;
+            left: 75px;
+            transform-origin: bottom center;
+            transition: transform 2s ease, opacity 1s ease;
+            cursor: pointer;
+            z-index: 10; /* Asegura que los pétalos estén al frente */
+        }
+
+        /* Rotación de cada pétalo */
+        .petalo:nth-child(1) { transform: rotate(0deg); }
+        .petalo:nth-child(2) { transform: rotate(45deg); }
+        .petalo:nth-child(3) { transform: rotate(90deg); }
+        .petalo:nth-child(4) { transform: rotate(135deg); }
+        .petalo:nth-child(5) { transform: rotate(180deg); }
+        .petalo:nth-child(6) { transform: rotate(225deg); }
+        .petalo:nth-child(7) { transform: rotate(270deg); }
+        .petalo:nth-child(8) { transform: rotate(315deg); }
+
+        /* Centro de la flor */
+        .centro {
+            width: 120px;
+            height: 120px;
+            background-color: brown;
+            border-radius: 50%;
+            position: absolute;
+            top: 160px;
+            left: 90px;
+            z-index: 15; /* Se asegura de que el centro esté visible */
+        }
+
+        /* Tallo de la flor */
+        .Tallo {
+            width: 25px;
+            height: 300px;
+            background-color: green;
+            position: absolute;
+            top: 374px;
+            left: 140px;
+            z-index: 1; /* El tallo está detrás */
+        }
+
+        /* Hojas de la flor */
+        .hoja {
+            width: 110px;
+            height: 110px;
+            background-color: green;
+            border-radius: 55px 0px 55px 0px;
+            position: absolute;
+            top: 420px;
+            left: 31px;
+            z-index: 1; /* Las hojas están detrás */
+        }
+        
+        .hoja2 {
+            width: 110px;
+            height: 110px;
+            background-color: green;
+            border-radius: 55px 0px 57.5px 0px;
+            position: absolute;
+            top: 425px;
+            left: 219px;
+            transform: translateX(-50%);
+            transition: transform 1s ease, opacity 1s ease;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        /* Animación de caída */
+        @keyframes caerAlSuelo {
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(600px) rotate(90deg); /* Caída más baja sin rebote */
+                opacity: 0; /* Desaparece al tocar el suelo */
+            }
+        }
+
+        /* Movimiento de la flor completa */
+        .flor {
+            animation: moverFlor 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes moverFlor {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(5px); }
+        }
+
+        /* Estilo para el mensaje con forma de nube de pensamiento */
+        #mensaje {
+            position: fixed;
+            right: 30%;
+            border-radius: 20px; /* Ajustado para menos redondeo */
+            width: 200px; /* Ancho de la nube */
+            padding: 20px;
+            background: #a9def9; /* Color de la nube */
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+            color: #000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+            z-index: 2;
+            opacity: 0; /* Inicialmente oculto */
+            transition: opacity 2s ease; /* Transición para la desaparición */
+        }
+
+        #mensaje::before {
+            content: "";
+            position: absolute;
+            bottom: -30px; /* Ajusta la posición del pico */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid #a9def9; /* Color del pico que coincide con la nube */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Flor -->
+    <div class="flor">
+        <div class="petalo" onclick="caer(this, 1)"></div>
+        <div class="petalo" onclick="caer(this, 2)"></div>
+        <div class="petalo" onclick="caer(this, 3)"></div>
+        <div class="petalo" onclick="caer(this, 4)"></div>
+        <div class="petalo" onclick="caer(this, 5)"></div>
+        <div class="petalo" onclick="caer(this, 6)"></div>
+        <div class="petalo" onclick="caer(this, 7)"></div>
+        <div class="petalo" onclick="caer(this, 8)"></div>
+        <div class="centro"></div>
+        <div class="Tallo"></div>
+        <div class="hoja"></div>
+        <div class="hoja2"></div>
+    </div>
+
+    <div class="mensaje" id="mensaje"></div>
+
+    <script>
+        let petalosTocados = 0;
+        const totalPetalos = 8;
+
+        function moverFlor() {
+            let flor = document.querySelector('.flor');
+            flor.style.transform = `translateX(${5 * (petalosTocados % 2)}px)`;
+            petalosTocados++;
+        }
+
+        setInterval(moverFlor, 1500);  // Mueve la flor automáticamente cada 1.5 segundos
+
+        // Función para mostrar mensaje al caer pétalo
+        function caer(petalo, index) {
+            if (petalosTocados >= totalPetalos) {
+                // Si es el último pétalo, redirige al video
+                window.location.href = 'https://www.youtube.com/watch?v=iJ7WVZthwek&list=RDiJ7WVZthwek&start_radio=1'; // Reemplaza con la URL de tu video
+                return;
+            }
+
+            petalo.style.animation = "caerAlSuelo 2s forwards";
+            petalo.style.pointerEvents = 'none'; // Evita que el pétalo se toque de nuevo
+
+            // Array con los mensajes
+            const mensajes = [
+                "Hola preciosa",
+                "Que guapa has de estar",
+                "Mi futura chef",
+                "No quemes la comida",
+                "Sabías que te amo?",
+                "La chef más perezosa",
+                "Rascacielos",
+                "Niña guapa"
+            ];
+
+            // Mostrar el mensaje
+            const mensaje = document.getElementById('mensaje');
+            mensaje.innerText = mensajes[index - 1];
+            mensaje.style.opacity = 1;
+
+            // Ocultar mensaje después de 2 segundos
+            setTimeout(() => {
+                mensaje.style.opacity = 0;
+            }, 2000);
+
+            petalosTocados++;
+        }
+    </script>
+</body>
+</html>
